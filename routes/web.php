@@ -14,9 +14,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-// Grupo de rotas da API
-$router->group(['prefix' => 'api'], function () use ($router) {
-    // Rota "/api/login
+// Grupo de rotas AUTH
+$router->group(['prefix' => 'auth'], function () use ($router) {
+    // Rota "/auth/login
     $router->post('login', 'AuthController@login');
 });
 
@@ -26,5 +26,8 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use (
     $router->post('register', 'AuthController@register');
 
     // Rota "/api/profile
-    $router->get('profile', 'UsuarioController@profile');
+    $router->get('profile', 'AuthController@profile');
+
+    //Rota "/api/usuarios"
+    $router->get('usuarios', 'UsuarioController@usuarios');
 });
