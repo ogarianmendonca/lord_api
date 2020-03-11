@@ -23,9 +23,13 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only(['email', 'password']);
-
-        if (! $token = Auth::attempt($credentials)) {
+        if (!$token = Auth::attempt($credentials)) {
             return response()->json(['message' => 'Não autorizado!'], 401);
+        }
+
+        $user = Auth::user();
+        if($user->status === 0){
+            return response()->json(['message' => 'Usuário inativo!'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -37,7 +41,7 @@ class AuthController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function register(Request $request)
+    public function cadastrar(Request $request)
     {
         //validar solicitação recebida 
         $this->validate($request, [
@@ -73,7 +77,7 @@ class AuthController extends Controller
      *
      * @return Response
      */
-    public function profile()
+    public function perfil()
     {
         try {
             $usuarioLogado = Auth::user();

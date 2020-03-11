@@ -22,12 +22,24 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
 
 // Grupo de rotas da API
 $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use ($router) {
-    // Rota "/api/register
-    $router->post('register', 'AuthController@register');
+    // Rota "/api/cadastrar
+    $router->post('cadastrar', 'AuthController@cadastrar');
 
-    // Rota "/api/profile
-    $router->get('profile', 'AuthController@profile');
+    // Rota "/api/perfil
+    $router->get('perfil', 'AuthController@perfil');
 
-    //Rota "/api/usuarios"
-    $router->get('usuarios', 'UsuarioController@usuarios');
+    // Grupo de rotas do USUARIO
+    $router->group(['prefix' => 'usuario', 'middleware' => 'jwt.auth'], function() use ($router) {
+        //Rota "/api/usuario/buscar_todos"
+        $router->get('buscar_todos', 'UsuarioController@buscarTodos');
+
+        //Rota "/api/usuario/visualizar/id
+        $router->get('visualizar/{id}', 'UsuarioController@visualizar');    
+
+        //Rota "/api/usuario/editar/id"
+        $router->put('editar/{id}', 'UsuarioController@editar');
+
+        //Rota "/api/usuario/alterar_status/id"
+        $router->put('alterar_status/{id}', 'UsuarioController@alterarStatus');
+    });
 });
