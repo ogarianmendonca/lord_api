@@ -25,7 +25,7 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (! $token = Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Não autorizado!'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -44,6 +44,8 @@ class AuthController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:user',
             'password' => 'required|confirmed',
+            'imagem' => 'required|string',
+            'perfil_id' => 'required|integer',
         ]);
 
         try {
@@ -54,17 +56,14 @@ class AuthController extends Controller
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
             $user->imagem = $request->input('imagem');
-            $user->status = $request->input('status');
+            $user->status = true;
             $user->perfil_id = $request->input('perfil_id');
 
             $user->save();
 
-            //retornar resposta bem sucedida
-            return response()->json(['user' => $user, 'message' => 'CREATED'], 201);
-
+            return response()->json(['user' => $user, 'message' => 'Usuário cadastrado!'], 201);
         } catch (\Exception $e) {
-            //retornar mensagem de erro
-            return response()->json(['message' => 'User Registration Failed!'], 409);
+            return response()->json(['message' => 'Cadastro não efetuado!'], 409);
         }
 
     }
@@ -76,6 +75,13 @@ class AuthController extends Controller
      */
     public function profile()
     {
-        return response()->json(['user' => Auth::user()], 200);
+        try {
+            $usuarioLogado = Auth::user();
+            $usuarioLogado->perfil = $usuarioLogado->perfil()->get();
+
+            return response()->json(['user' => $usuarioLogado], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Não foi possível retornar os dados!'], 409);
+        }
     }
 }
