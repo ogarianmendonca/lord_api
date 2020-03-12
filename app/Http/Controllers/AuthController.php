@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Entities\User;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
     /**
      * Obtém um JWT por meio de credenciais fornecidas.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param Request $request
+     * @return Response|\Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function login(Request $request)
     {
@@ -28,7 +31,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        if($user->status === 0){
+        if($user['status'] === 0){
             return response()->json(['message' => 'Usuário inativo!'], 401);
         }
 
@@ -38,12 +41,13 @@ class AuthController extends Controller
     /**
      * Cadastrar um novo usuário.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function cadastrar(Request $request)
     {
-        //validar solicitação recebida 
+        //validar solicitação recebida
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:user',
@@ -53,7 +57,7 @@ class AuthController extends Controller
         ]);
 
         try {
-           
+
             $user = new User;
             $user->name = $request->input('name');
             $user->email = $request->input('email');
@@ -66,7 +70,7 @@ class AuthController extends Controller
             $user->save();
 
             return response()->json(['user' => $user, 'message' => 'Usuário cadastrado!'], 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Cadastro não efetuado!'], 409);
         }
 
@@ -84,7 +88,7 @@ class AuthController extends Controller
             $usuarioLogado->perfil = $usuarioLogado->perfil()->get();
 
             return response()->json(['user' => $usuarioLogado], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Não foi possível retornar os dados!'], 409);
         }
     }
