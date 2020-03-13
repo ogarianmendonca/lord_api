@@ -8,12 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Entities\Perfil;
 
+/**
+ * Class User
+ * @package App\Entities
+ *
+ * @method find($id)
+ */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable;
 
+    /**
+     * @var string
+     */
     protected $table = 'user';
 
     /**
@@ -35,8 +43,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
-     * Abaixo código adicionado para implementacao do JWT
-     * 
      * Obtenha o identificador que será armazenado na reivindicação de assunto do JWT.
      *
      * @return mixed
@@ -56,6 +62,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [];
     }
 
+    /**
+     * Relacionamento de usuário para perfil
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function perfil()
     {
         return $this->hasOne(Perfil::class, 'id', 'perfil_id');

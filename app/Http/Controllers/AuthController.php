@@ -6,15 +6,18 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Entities\User;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class AuthController
+ * @package App\Http\Controllers
+ */
 class AuthController extends Controller
 {
     /**
      * Obtém um JWT por meio de credenciais fornecidas.
      *
      * @param Request $request
-     * @return Response|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function login(Request $request)
@@ -42,7 +45,7 @@ class AuthController extends Controller
      * Cadastrar um novo usuário.
      *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function cadastrar(Request $request)
@@ -79,7 +82,7 @@ class AuthController extends Controller
     /**
      * Obtém o usuário autenticado.
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function perfil()
     {

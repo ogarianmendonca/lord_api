@@ -4,8 +4,17 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Perfil extends Model 
+/**
+ * Class Perfil
+ * @package App\Entities
+ *
+ * @method get()
+ */
+class Perfil extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'perfil';
 
     /**

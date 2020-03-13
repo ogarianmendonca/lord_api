@@ -29,17 +29,23 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use (
     $router->get('perfil', 'AuthController@perfil');
 
     // Grupo de rotas do USUARIO
-    $router->group(['prefix' => 'usuario', 'middleware' => 'jwt.auth'], function() use ($router) {
+    $router->group(['prefix' => 'usuario'], function() use ($router) {
         //Rota "/api/usuario/buscar_todos"
         $router->get('buscar_todos', 'UsuarioController@buscarTodos');
 
         //Rota "/api/usuario/visualizar/id
-        $router->get('visualizar/{id}', 'UsuarioController@visualizar');    
+        $router->get('visualizar/{id}', 'UsuarioController@visualizar');
 
         //Rota "/api/usuario/editar/id"
         $router->put('editar/{id}', 'UsuarioController@editar');
 
         //Rota "/api/usuario/alterar_status/id"
         $router->put('alterar_status/{id}', 'UsuarioController@alterarStatus');
+    });
+
+    // Grupo de rotas do PEFIL
+    $router->group(['prefix' => 'perfil'], function() use ($router) {
+        //Rota "/api/perfil/buscar_todos"
+        $router->get('buscar_todos', 'PerfilController@buscarTodos');
     });
 });
