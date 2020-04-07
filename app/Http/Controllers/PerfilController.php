@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\PerfilService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Class PerfilController
@@ -28,7 +29,7 @@ class PerfilController extends Controller
     /**
      * Busca todos os perfis cadastrados
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function buscarTodos()
     {

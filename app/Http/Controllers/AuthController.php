@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Entities\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class AuthController
@@ -17,8 +19,8 @@ class AuthController extends Controller
      * Obtém um JWT por meio de credenciais fornecidas.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function login(Request $request)
     {
@@ -34,7 +36,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        if($user['status'] === 0){
+        if($user['status'] === 0 || $user['status'] === '0'){
             return response()->json(['message' => 'Usuário inativo!'], 401);
         }
 
@@ -45,8 +47,8 @@ class AuthController extends Controller
      * Cadastrar um novo usuário.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function cadastrar(Request $request)
     {
@@ -60,19 +62,18 @@ class AuthController extends Controller
         ]);
 
         try {
-
-            $user = new User;
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
+            $usuario = new User;
+            $usuario->name = $request->input('name');
+            $usuario->email = $request->input('email');
             $plainPassword = $request->input('password');
-            $user->password = app('hash')->make($plainPassword);
-            $user->imagem = $request->input('imagem');
-            $user->status = true;
-            $user->perfil_id = $request->input('perfil_id');
+            $usuario->password = app('hash')->make($plainPassword);
+            $usuario->imagem = $request->input('imagem');
+            $usuario->status = true;
+            $usuario->perfil_id = $request->input('perfil_id');
 
-            $user->save();
+            $usuario->save();
 
-            return response()->json(['user' => $user, 'message' => 'Usuário cadastrado!'], 201);
+            return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);
         } catch (Exception $e) {
             return response()->json(['message' => 'Cadastro não efetuado!'], 409);
         }
@@ -82,7 +83,7 @@ class AuthController extends Controller
     /**
      * Obtém o usuário autenticado.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function perfil()
     {
@@ -90,7 +91,7 @@ class AuthController extends Controller
             $usuarioLogado = Auth::user();
             $usuarioLogado->perfil = $usuarioLogado->perfil()->get();
 
-            return response()->json(['user' => $usuarioLogado], 200);
+            return response()->json(['usuario' => $usuarioLogado], 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Não foi possível retornar os dados!'], 409);
         }

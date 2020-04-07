@@ -29,7 +29,6 @@ class PerfilService
      */
     public function buscaPerfis()
     {
-        $perfis = $this->perfil->get();
-        return $perfis;
+        return $this->perfil->get();
     }
 }

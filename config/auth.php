@@ -3,6 +3,8 @@
 /**
  * Configuração do auth JWT
  */
+use App\Entities\User;
+
 return [
     'defaults' => [
         'guard' => 'api',
@@ -19,7 +21,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \App\Entities\User::class
+            'model' => User::class
         ]
     ]
 ];

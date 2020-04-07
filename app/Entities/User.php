@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasOne as HasOneAlias;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -14,6 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @package App\Entities
  *
  * @method find($id)
+ * @method static create(array $array)
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
@@ -65,7 +67,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * Relacionamento de usuário para perfil
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOneAlias
      */
     public function perfil()
     {

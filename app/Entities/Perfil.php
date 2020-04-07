@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Entities
  *
  * @method get()
+ * @method static create(array $array)
  */
 class Perfil extends Model
 {

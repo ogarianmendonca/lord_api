@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AutorizacaoService;
 use Exception;
 use App\Services\UsuarioService;
 use Illuminate\Http\Request;
@@ -18,13 +19,19 @@ class UsuarioController extends Controller
     private $service;
 
     /**
+     * @var AutorizacaoService
+     */
+    private $autorizacaoService;
+
+    /**
      * UsuarioController constructor.
      * @param UsuarioService $service
      */
-    public function __construct(UsuarioService $service)
+    public function __construct(UsuarioService $service, AutorizacaoService $autorizacaoService)
     {
         $this->middleware('auth');
         $this->service = $service;
+        $this->autorizacaoService = $autorizacaoService;
     }
 
     /**
@@ -67,9 +74,11 @@ class UsuarioController extends Controller
      */
     public function editar($id, Request $request)
     {
+//        $this->autorizacaoService->verificarPerfilAdministrador();
+
         try {
             $retorno = $this->service->editarUsuario($id, $request->all());
-            return $retorno;
+            return response()->json(['message' => 'Usuário editado!', 'usuario' => $retorno]);
         } catch (Exception $e) {
             return response()->json(['message' => 'Usuário não editado!'], 409);
         }
@@ -85,9 +94,10 @@ class UsuarioController extends Controller
     {
         try {
             $retorno = $this->service->alterarStatusUsuario($id);
-            return $retorno;
+            return response()->json(['message' => 'Status alterado!', 'status' => $retorno]);
         } catch (Exception $e) {
             return response()->json(['message' => 'Status não alterado!'], 409);
         }
     }
+
 }

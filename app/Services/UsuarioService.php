@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use App\Entities\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -28,24 +32,22 @@ class UsuarioService
     /**
      * Busca na base todos os usuários cadastrados
      *
-     * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return User[]|Builder[]|Collection
      */
     public function buscaUsuarios()
     {
-        $usuarios = $this->usuario->with('perfil')->get();
-        return $usuarios;
+        return $this->usuario->with('perfil')->get();
     }
 
     /**
      * Busca na base o usuário por id
      *
      * @param $id
-     * @return User|User[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return User|User[]|Builder|Builder[]|Collection|Model
      */
     public function buscaUsuarioSelecionado($id)
     {
-        $usuario = $this->usuario->with('perfil')->findOrFail($id);
-        return $usuario;
+        return $this->usuario->with('perfil')->findOrFail($id);
     }
 
     /**
@@ -53,7 +55,8 @@ class UsuarioService
      *
      * @param $id
      * @param $dados
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
+     * @throws \Exception
      */
     public function editarUsuario($id, $dados)
     {
@@ -80,9 +83,9 @@ class UsuarioService
             $this->usuario->find($id)->update($editaUsuario);
 
             DB::commit();
-            return response()->json(['message' => 'Usuário editado!']);
+            return $editaUsuario;
         } else {
-            return response()->json(['message' => 'Usuário não editado!'], 409);
+            throw new \Exception();
         }
     }
 
@@ -90,9 +93,10 @@ class UsuarioService
      * Altera status de usuario selecionado
      *
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return bool
+     * @throws \Exception
      */
-    public function alterarStatususuario($id)
+    public function alterarStatusUsuario($id)
     {
         $usuario = $this->usuario->with('perfil')->find($id);
 
@@ -109,9 +113,9 @@ class UsuarioService
             $this->usuario->find($id)->update($alterarDado);
 
             DB::commit();
-            return response()->json(['message' => 'Status alterado!']);
+            return $alterarDado['status'];
         } else {
-            return response()->json(['message' => 'Status não alterado!'], 409);
+            throw new \Exception();
         }
     }
 
