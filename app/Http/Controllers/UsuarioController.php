@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\AutorizacaoService;
 use Exception;
 use App\Services\UsuarioService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -26,6 +27,8 @@ class UsuarioController extends Controller
     /**
      * UsuarioController constructor.
      * @param UsuarioService $service
+     * @param AutorizacaoService $autorizacaoService
+     *
      */
     public function __construct(UsuarioService $service, AutorizacaoService $autorizacaoService)
     {
@@ -37,7 +40,7 @@ class UsuarioController extends Controller
     /**
      * Lista todos os usuários cadastrados
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function buscarTodos()
     {
@@ -45,7 +48,7 @@ class UsuarioController extends Controller
             $usuarios = $this->service->buscaUsuarios();
             return response()->json(compact('usuarios'));
         } catch (Exception $e) {
-            return response()->json(['message' => 'Listagem de usuários não disponível!'], 409);
+            return response()->json(['message' => 'Listagem não disponível!'], 409);
         }
     }
 
@@ -53,7 +56,7 @@ class UsuarioController extends Controller
      * Busca usuário selecionado
      *
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function visualizar($id)
     {
@@ -70,11 +73,11 @@ class UsuarioController extends Controller
      *
      * @param $id
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function editar($id, Request $request)
     {
-//        $this->autorizacaoService->verificarPerfilAdministrador();
+        $this->autorizacaoService->verificarAutorizacao($request->method());
 
         try {
             $retorno = $this->service->editarUsuario($id, $request->all());
@@ -88,10 +91,12 @@ class UsuarioController extends Controller
      * Alterar status de usuário selecionado
      *
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function alterarStatus($id)
+    public function alterarStatus($id, Request $request)
     {
+        $this->autorizacaoService->verificarAutorizacao($request->method());
+
         try {
             $retorno = $this->service->alterarStatusUsuario($id);
             return response()->json(['message' => 'Status alterado!', 'status' => $retorno]);

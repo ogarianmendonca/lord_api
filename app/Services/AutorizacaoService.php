@@ -18,17 +18,29 @@ class AutorizacaoService
     }
 
     /**
-     * Verifica se usuário tem permissão administrador
+     * Retorna perfil do usuário logado
+     * @return mixed
      */
-    public function verificarPerfilAdministrador()
+    private function usuarioLogado()
     {
         $usuarioLogado = Auth::user();
         $usuarioLogado->perfil = $usuarioLogado->perfil()->get();
 
-        if($usuarioLogado->perfil[0]->descricao !== 'ADMINISTRADOR') {
-//            return abort(403, 'Usuário não tem permissão de administrador!');
-//            return response()->json(['Usuário não tem permissão de administrador!'], 403);
-//            throw new \Exception("dfasfdsaffasd", 403);
+        return $usuarioLogado->perfil[0]->descricao;
+    }
+
+    /**
+     * Verificação de permissão para usuários com perfil ADMINISTRADOR ou COORDENADOR
+     * @param $metodoRequisicao
+     */
+    public function verificarAutorizacao($metodoRequisicao)
+    {
+        if($metodoRequisicao === "POST" || $metodoRequisicao === "PUT"){
+            if($this->usuarioLogado() !== 'ADMINISTRADOR' && $this->usuarioLogado() !== 'COORDENADOR') {
+                return response()
+                    ->json(['Usuário não tem permissão para essa ação!'], 403)
+                    ->throwResponse();
+            }
         }
     }
 

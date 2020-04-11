@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AutorizacaoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,20 @@ use Illuminate\Validation\ValidationException;
  */
 class AuthController extends Controller
 {
+    /**
+     * @var AutorizacaoService
+     */
+    private $autorizacaoService;
+
+    /**
+     * AuthController constructor.
+     * @param AutorizacaoService $autorizacaoService
+     */
+    public function __construct(AutorizacaoService $autorizacaoService)
+    {
+        $this->autorizacaoService = $autorizacaoService;
+    }
+
     /**
      * Obtém um JWT por meio de credenciais fornecidas.
      *
@@ -52,6 +67,8 @@ class AuthController extends Controller
      */
     public function cadastrar(Request $request)
     {
+        $this->autorizacaoService->verificarAutorizacao($request->method());
+
         //validar solicitação recebida
         $this->validate($request, [
             'name' => 'required|string',

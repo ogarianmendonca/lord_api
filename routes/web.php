@@ -22,14 +22,14 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
 
 // Grupo de rotas da API
 $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use ($router) {
-    // Rota "/api/cadastrar
-    $router->post('cadastrar', 'AuthController@cadastrar');
-
-    // Rota "/api/perfil
-    $router->get('perfil', 'AuthController@perfil');
-
     // Grupo de rotas do USUARIO
     $router->group(['prefix' => 'usuario'], function() use ($router) {
+        // Rota "/api/usuario/cadastrar
+        $router->post('cadastrar', 'AuthController@cadastrar');
+
+        // Rota "/api/usuario/perfil
+        $router->get('perfil', 'AuthController@perfil');
+
         //Rota "/api/usuario/buscar_todos"
         $router->get('buscar_todos', 'UsuarioController@buscarTodos');
 

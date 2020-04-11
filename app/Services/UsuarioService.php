@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entities\User;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -56,7 +57,7 @@ class UsuarioService
      * @param $id
      * @param $dados
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function editarUsuario($id, $dados)
     {
@@ -85,7 +86,7 @@ class UsuarioService
             DB::commit();
             return $editaUsuario;
         } else {
-            throw new \Exception();
+            throw new Exception();
         }
     }
 
@@ -94,7 +95,7 @@ class UsuarioService
      *
      * @param $id
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function alterarStatusUsuario($id)
     {
@@ -115,7 +116,7 @@ class UsuarioService
             DB::commit();
             return $alterarDado['status'];
         } else {
-            throw new \Exception();
+            throw new Exception();
         }
     }
 

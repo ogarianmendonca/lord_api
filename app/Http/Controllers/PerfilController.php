@@ -37,7 +37,7 @@ class PerfilController extends Controller
             $perfis = $this->service->buscaPerfis();
             return response()->json(compact('perfis'));
         } catch (Exception $e){
-            return response()->json(['message' => 'Listagem de peril não disponível!'], 409);
+            return response()->json(['message' => 'Listagem não disponível!'], 409);
         }
     }
 }

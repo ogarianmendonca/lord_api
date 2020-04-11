@@ -24,7 +24,8 @@ class Perfil extends Model
      * @var array
      */
     protected $fillable = [
-        'descricao', 'status'
+        'descricao',
+        'status'
     ];
 
 }
