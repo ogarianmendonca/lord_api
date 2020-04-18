@@ -18,6 +18,9 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'auth'], function () use ($router) {
     // Rota "/auth/login
     $router->post('login', 'AuthController@login');
+
+    // Rota "/auth/login
+    $router->get('logout', 'AuthController@logout');
 });
 
 // Grupo de rotas da API

@@ -57,13 +57,14 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    //App\Http\Middleware\ExampleMiddleware::class,
+    App\Http\Middleware\CorsMiddleware::class
+]);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
-    'jwt.auth' => App\Http\Middleware\JwtMiddleware::class,
+    //'jwt.auth' => App\Http\Middleware\JwtMiddleware::class,
 ]);
 
 /*

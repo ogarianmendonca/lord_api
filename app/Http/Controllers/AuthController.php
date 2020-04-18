@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Entities\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\JWTAuth;
 
 /**
  * Class AuthController
@@ -22,12 +23,18 @@ class AuthController extends Controller
     private $autorizacaoService;
 
     /**
+     * @var JWTAuth
+     */
+    private $jwtAuth;
+
+    /**
      * AuthController constructor.
      * @param AutorizacaoService $autorizacaoService
      */
-    public function __construct(AutorizacaoService $autorizacaoService)
+    public function __construct(AutorizacaoService $autorizacaoService, JWTAuth $jwtAuth)
     {
         $this->autorizacaoService = $autorizacaoService;
+        $this->jwtAuth = $jwtAuth;
     }
 
     /**
@@ -112,5 +119,16 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => 'Não foi possível retornar os dados!'], 409);
         }
+    }
+
+    /**
+     *  Metodo de logout
+     */
+    public function logout()
+    {
+        $token = $this->jwtAuth->getToken();
+        $this->jwtAuth->invalidate($token);
+
+        return response()->json(['logout']);
     }
 }
