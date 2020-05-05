@@ -105,4 +105,18 @@ class UsuarioController extends Controller
         }
     }
 
+    /**
+     * Upload de imagem do usuário
+     */
+    public function upload(Request $request)
+    {
+        $this->autorizacaoService->verificarAutorizacao($request->method());
+
+        try {
+            $retorno = $this->service->upload($request);
+            return response()->json(['message' => 'Imagem salva!', 'imagem' => $retorno]);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Erro ao salvar imagem!'], 409);
+        }
+    }
 }

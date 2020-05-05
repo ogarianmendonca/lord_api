@@ -61,21 +61,21 @@ class UsuarioService
      */
     public function editarUsuario($id, $dados)
     {
-        $usuario = $this->usuario->with('perfil')->findOrFail($id);
+        $usuario = $this->usuario->findOrFail(intval($id));
 
         if($usuario) {
             DB::beginTransaction();
 
             $editaUsuario['name'] = $dados['name'];
             $editaUsuario['email'] = $dados['email'];
-            $editaUsuario['perfil_id'] = $dados['perfil_id'];
-            $editaUsuario['status'] = $dados['status'];
+            $editaUsuario['perfil_id'] = intval($dados['perfil_id']);
+            $editaUsuario['status'] = intval($dados['status']);
 
             if(!empty($dados['imagem'])){
                 $editaUsuario['imagem'] = $dados['imagem'];
             }
 
-            if(!empty($dados['senha'])){
+            if(!empty($dados['password'])){
                 $editaUsuario['password'] = app('hash')->make($dados['password']);
             } else {
                 unset($editaUsuario['password']);
@@ -115,6 +115,25 @@ class UsuarioService
 
             DB::commit();
             return $alterarDado['status'];
+        } else {
+            throw new Exception();
+        }
+    }
+
+    /**
+     * Upload da imagem do usuário
+     */
+    public function upload ($dadosArquivo)
+    {
+        if($dadosArquivo->hasFile('imagem')) {
+            $imagem = $dadosArquivo->file('imagem');
+
+            $ext = $imagem->guessClientExtension();
+            $diretorio = "img/uploads/perfil/";
+            $nomeImg = $diretorio . 'imagem_perfil_' . rand(11111,99999) . '.' . $ext;
+            $imagem->move($diretorio, $nomeImg);
+
+            return $nomeImg;
         } else {
             throw new Exception();
         }

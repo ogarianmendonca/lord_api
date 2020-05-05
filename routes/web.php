@@ -44,6 +44,9 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use (
 
         //Rota "/api/usuario/alterar_status/id"
         $router->put('alterar_status/{id}', 'UsuarioController@alterarStatus');
+
+        //Rota "/api/usuario/upload"
+        $router->post('upload', 'UsuarioController@upload');
     });
 
     // Grupo de rotas do PEFIL

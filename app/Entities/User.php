@@ -16,6 +16,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  *
  * @method find($id)
  * @method static create(array $array)
+ * @method findOrFail(int $intval)
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
@@ -34,6 +35,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $fillable = [
         'name',
         'email',
+        'password',
         'imagem',
         'status',
         'perfil_id'
