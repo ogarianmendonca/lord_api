@@ -77,7 +77,7 @@ class UsuarioController extends Controller
      */
     public function editar($id, Request $request)
     {
-        $this->autorizacaoService->verificarAutorizacao($request->method());
+        $this->autorizacaoService->verificarAutorizacao($request, $id);
 
         try {
             $retorno = $this->service->editarUsuario($id, $request->all());
@@ -95,7 +95,7 @@ class UsuarioController extends Controller
      */
     public function alterarStatus($id, Request $request)
     {
-        $this->autorizacaoService->verificarAutorizacao($request->method());
+        $this->autorizacaoService->verificarAutorizacao($request);
 
         try {
             $retorno = $this->service->alterarStatusUsuario($id);
@@ -110,7 +110,7 @@ class UsuarioController extends Controller
      */
     public function upload(Request $request)
     {
-        $this->autorizacaoService->verificarAutorizacao($request->method());
+        $this->autorizacaoService->verificarAutorizacao($request);
 
         try {
             $retorno = $this->service->upload($request);

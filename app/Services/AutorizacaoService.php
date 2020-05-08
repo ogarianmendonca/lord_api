@@ -26,21 +26,30 @@ class AutorizacaoService
         $usuarioLogado = Auth::user();
         $usuarioLogado->perfil = $usuarioLogado->perfil()->get();
 
-        return $usuarioLogado->perfil[0]->descricao;
+        return $usuarioLogado;
     }
 
     /**
      * Verificação de permissão para usuários com perfil ADMINISTRADOR ou COORDENADOR
-     * @param $metodoRequisicao
+     * @param $request
+     * @param null $id
+     * @return void
      */
-    public function verificarAutorizacao($metodoRequisicao)
+    public function verificarAutorizacao($request, $id = null)
     {
-        if($metodoRequisicao === "POST" || $metodoRequisicao === "PUT"){
-            if($this->usuarioLogado() !== 'ADMINISTRADOR' && $this->usuarioLogado() !== 'COORDENADOR') {
+        if($request->method() === "POST"){
+            if($this->usuarioLogado()->perfil[0]->descricao !== 'ADMINISTRADOR' &&
+               $this->usuarioLogado()->perfil[0]->descricao !== 'COORDENADOR') {
                 return response()
-                    ->json(['Usuário não tem permissão para essa ação!'], 403)
+                    ->json(['Usuário não tem permissão para esta ação!'], 403)
                     ->throwResponse();
             }
+        }
+
+        if($request->method() === "PUT" && intval($id) !== $this->usuarioLogado()->id) {
+            return response()
+            ->json(['Usuário não tem permissão para esta ação!'], 403)
+            ->throwResponse();
         }
     }
 

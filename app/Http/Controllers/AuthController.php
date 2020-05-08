@@ -74,7 +74,7 @@ class AuthController extends Controller
      */
     public function cadastrar(Request $request)
     {
-        $this->autorizacaoService->verificarAutorizacao($request->method());
+        $this->autorizacaoService->verificarAutorizacao($request);
 
         //validar solicitação recebida
         $this->validate($request, [
@@ -109,11 +109,11 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function perfil()
+    public function getUser()
     {
         try {
             $usuarioLogado = Auth::user();
-            $usuarioLogado->perfil = $usuarioLogado->perfil()->get();
+            $usuarioLogado->perfil = $usuarioLogado['perfil']->get();
 
             return response()->json(['usuario' => $usuarioLogado], 200);
         } catch (Exception $e) {

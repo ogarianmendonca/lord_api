@@ -30,8 +30,8 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use (
         // Rota "/api/usuario/cadastrar
         $router->post('cadastrar', 'AuthController@cadastrar');
 
-        // Rota "/api/usuario/perfil
-        $router->get('perfil', 'AuthController@perfil');
+        // Rota "/api/usuario/get_user
+        $router->get('get_user', 'AuthController@getUser');
 
         //Rota "/api/usuario/buscar_todos"
         $router->get('buscar_todos', 'UsuarioController@buscarTodos');
