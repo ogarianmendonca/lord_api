@@ -63,7 +63,7 @@ class UsuarioService
     {
         $usuario = $this->usuario->findOrFail(intval($id));
 
-        if($usuario) {
+        if ($usuario) {
             DB::beginTransaction();
 
             $editaUsuario['name'] = $dados['name'];
@@ -71,11 +71,11 @@ class UsuarioService
             $editaUsuario['perfil_id'] = intval($dados['perfil_id']);
             $editaUsuario['status'] = intval($dados['status']);
 
-            if(!empty($dados['imagem'])){
+            if (!empty($dados['imagem'])) {
                 $editaUsuario['imagem'] = $dados['imagem'];
             }
 
-            if(!empty($dados['password'])){
+            if (!empty($dados['password'])) {
                 $editaUsuario['password'] = app('hash')->make($dados['password']);
             } else {
                 unset($editaUsuario['password']);
@@ -101,10 +101,10 @@ class UsuarioService
     {
         $usuario = $this->usuario->with('perfil')->find($id);
 
-        if($usuario) {
+        if ($usuario) {
             DB::beginTransaction();
 
-            if($usuario['status']){
+            if ($usuario['status']) {
                 $novoStatus = false;
             } else {
                 $novoStatus = true;
@@ -123,20 +123,32 @@ class UsuarioService
     /**
      * Upload da imagem do usuário
      */
-    public function upload ($dadosArquivo)
+    public function upload($dadosArquivo)
     {
-        if($dadosArquivo->hasFile('imagem')) {
+        // Salva a imagem dentro do diretorio do back-end
+        // if($dadosArquivo->hasFile('imagem')) {
+        //     $imagem = $dadosArquivo->file('imagem');
+
+        //     $ext = $imagem->guessClientExtension();
+        //     $diretorio = "img/uploads/perfil/";
+        //     $nomeImg = $diretorio . 'imagem_perfil_' . rand(11111,99999) . '.' . $ext;
+        //     $imagem->move($diretorio, $nomeImg);
+
+        //     return $nomeImg;
+        // } else {
+        //     throw new Exception();
+        // }
+
+        // Salva a imagem no banco de dados no formato base64
+        if ($dadosArquivo->hasFile('imagem')) {
             $imagem = $dadosArquivo->file('imagem');
-
             $ext = $imagem->guessClientExtension();
-            $diretorio = "img/uploads/perfil/";
-            $nomeImg = $diretorio . 'imagem_perfil_' . rand(11111,99999) . '.' . $ext;
-            $imagem->move($diretorio, $nomeImg);
+            $data = file_get_contents($imagem);
+            $base64 = 'data:image/' . $ext . ';base64,' . base64_encode($data);
 
-            return $nomeImg;
+            return $base64;
         } else {
             throw new Exception();
         }
     }
-
 }
