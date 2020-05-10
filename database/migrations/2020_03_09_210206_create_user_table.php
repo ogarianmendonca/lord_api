@@ -18,7 +18,7 @@ class CreateUserTable extends Migration
             $table->string('name');
             $table->string('email')->unique()->notNullable();
             $table->string('password');
-            $table->string('imagem');
+            $table->text('imagem');
             $table->boolean('status');
             $table->integer('perfil_id');
             $table->timestamps();

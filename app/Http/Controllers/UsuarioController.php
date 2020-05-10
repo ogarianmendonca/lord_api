@@ -46,7 +46,7 @@ class UsuarioController extends Controller
     {
         try {
             $usuarios = $this->service->buscaUsuarios();
-            return response()->json(compact('usuarios'));
+            return response()->json($usuarios);
         } catch (Exception $e) {
             return response()->json(['message' => 'Listagem não disponível!'], 409);
         }
@@ -110,8 +110,6 @@ class UsuarioController extends Controller
      */
     public function upload(Request $request)
     {
-        $this->autorizacaoService->verificarAutorizacao($request);
-
         try {
             $retorno = $this->service->upload($request);
             return response()->json(['message' => 'Imagem salva!', 'imagem' => $retorno]);

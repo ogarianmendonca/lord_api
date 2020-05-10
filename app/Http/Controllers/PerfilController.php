@@ -35,7 +35,7 @@ class PerfilController extends Controller
     {
         try{
             $perfis = $this->service->buscaPerfis();
-            return response()->json(compact('perfis'));
+            return response()->json($perfis);
         } catch (Exception $e){
             return response()->json(['message' => 'Listagem não disponível!'], 409);
         }
