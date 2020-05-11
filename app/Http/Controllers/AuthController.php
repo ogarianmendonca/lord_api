@@ -46,7 +46,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        //validar solicitação recebida
+        //valida solicitação recebida
         $this->validate($request, [
             'email' => 'required|string',
             'password' => 'required|string',
@@ -57,8 +57,12 @@ class AuthController extends Controller
             return response()->json(['message' => 'Não autorizado!'], 401);
         }
 
+        //verifica se o usuário está ativo
         $user = Auth::user();
-        if($user['status'] === 0 || $user['status'] === '0'){
+        if ($user['status'] === 0 || 
+            $user['status'] === '0' || 
+            $user['status'] === 'false' || 
+            $user['status'] === false){
             return response()->json(['message' => 'Usuário inativo!'], 401);
         }
 
@@ -76,7 +80,7 @@ class AuthController extends Controller
     {
         $this->autorizacaoService->verificarAutorizacao($request);
 
-        //validar solicitação recebida
+        //valida solicitação recebida
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:user',
@@ -89,12 +93,12 @@ class AuthController extends Controller
             $usuario = new User;
             $usuario->name = $request->input('name');
             $usuario->email = $request->input('email');
-            $plainPassword = $request->input('password');
-            $usuario->password = app('hash')->make($plainPassword);
             $usuario->imagem = $request->input('imagem');
             $usuario->status = true;
             $usuario->perfil_id = $request->input('perfil_id');
-
+            $plainPassword = $request->input('password');
+            $usuario->password = app('hash')->make($plainPassword);
+            
             $usuario->save();
 
             return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);

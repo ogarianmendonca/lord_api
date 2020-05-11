@@ -27,7 +27,7 @@ class PerfilService
     /**
      * @return mixed
      */
-    public function buscaPerfis()
+    public function buscarPerfis()
     {
         return $this->perfil->get();
     }

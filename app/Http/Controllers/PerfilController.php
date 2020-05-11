@@ -31,10 +31,10 @@ class PerfilController extends Controller
      *
      * @return JsonResponse
      */
-    public function buscarTodos()
+    public function buscarPerfis()
     {
         try{
-            $perfis = $this->service->buscaPerfis();
+            $perfis = $this->service->buscarPerfis();
             return response()->json($perfis);
         } catch (Exception $e){
             return response()->json(['message' => 'Listagem não disponível!'], 409);

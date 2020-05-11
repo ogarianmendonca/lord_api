@@ -35,7 +35,7 @@ class UsuarioService
      *
      * @return User[]|Builder[]|Collection
      */
-    public function buscaUsuarios()
+    public function buscarUsuarios()
     {
         return $this->usuario->with('perfil')->get();
     }
@@ -46,7 +46,7 @@ class UsuarioService
      * @param $id
      * @return User|User[]|Builder|Builder[]|Collection|Model
      */
-    public function buscaUsuarioSelecionado($id)
+    public function buscarUsuarioSelecionado($id)
     {
         return $this->usuario->with('perfil')->findOrFail($id);
     }

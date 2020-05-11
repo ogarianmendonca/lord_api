@@ -42,10 +42,10 @@ class UsuarioController extends Controller
      *
      * @return JsonResponse
      */
-    public function buscarTodos()
+    public function buscarUsuarios()
     {
         try {
-            $usuarios = $this->service->buscaUsuarios();
+            $usuarios = $this->service->buscarUsuarios();
             return response()->json($usuarios);
         } catch (Exception $e) {
             return response()->json(['message' => 'Listagem não disponível!'], 409);
@@ -58,10 +58,10 @@ class UsuarioController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function visualizar($id)
+    public function visualizarUsuario($id)
     {
         try {
-            $usuario = $this->service->buscaUsuarioSelecionado($id);
+            $usuario = $this->service->buscarUsuarioSelecionado($id);
             return response()->json(compact('usuario'));
         } catch (Exception $e) {
             return response()->json(['message' => 'Usuário não encontrado!'], 409);
