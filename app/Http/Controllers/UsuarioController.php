@@ -95,7 +95,7 @@ class UsuarioController extends Controller
      */
     public function alterarStatus($id, Request $request)
     {
-        $this->autorizacaoService->verificarAutorizacao($request);
+        $this->autorizacaoService->verificarAutorizacao($request, $id);
 
         try {
             $retorno = $this->service->alterarStatusUsuario($id);

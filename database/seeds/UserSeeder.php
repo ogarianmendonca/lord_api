@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'name' => 'Luigi Bros',
             'email' => 'luigi@email.com',
             'password' => app('hash')->make('123456'),
-            'imagem' => 'img/uploads/perfil/luigi.png',
+            'imagem' => 'luigi.png',
             'perfil_id' => 1,
             'status' => true
         ]);
@@ -28,9 +28,18 @@ class UserSeeder extends Seeder
             'name' => 'Mario Bros',
             'email' => 'mario@email.com',
             'password' => app('hash')->make('123456'),
-            'imagem' => 'img/uploads/perfil/mario.png',
+            'imagem' => 'mario.png',
             'perfil_id' => 2,
-            'status' => false
+            'status' => true
+        ]);
+
+        User::create([
+            'name' => 'João das Neves',
+            'email' => 'joao@email.com',
+            'password' => app('hash')->make('123456'),
+            'imagem' => 'joao.png',
+            'perfil_id' => 3,
+            'status' => true
         ]);
     }
 }

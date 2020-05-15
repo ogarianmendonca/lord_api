@@ -47,9 +47,12 @@ class AutorizacaoService
         }
 
         if($request->method() === "PUT" && intval($id) !== $this->usuarioLogado()->id) {
-            return response()
-            ->json(['Usuário não tem permissão para esta ação!'], 403)
-            ->throwResponse();
+            if($this->usuarioLogado()->perfil[0]->descricao !== 'ADMINISTRADOR' &&
+               $this->usuarioLogado()->perfil[0]->descricao !== 'COORDENADOR') {
+                return response()
+                    ->json(['Usuário não tem permissão para esta ação!'], 403)
+                    ->throwResponse();
+            }
         }
     }
 

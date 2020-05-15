@@ -22,7 +22,7 @@ class PerfilSeeder extends Seeder
 
         Perfil::create([
             'descricao' => 'COORDENADOR',
-            'status' => false
+            'status' => true
         ]);
 
         Perfil::create([
