@@ -69,7 +69,15 @@ class UsuarioService
             $editaUsuario['name'] = $dados['name'];
             $editaUsuario['email'] = $dados['email'];
             $editaUsuario['perfil_id'] = intval($dados['perfil_id']);
-            $editaUsuario['status'] = intval($dados['status']);
+
+            if($dados['status'] === 'true' 
+                || $dados['status'] === '1' 
+                || $dados['status'] === true 
+                || $dados['status'] === 1) {
+                $editaUsuario['status'] = true;
+            } else {
+                $editaUsuario['status'] = false;
+            }
 
             if (!empty($dados['imagem'])) {
                 $editaUsuario['imagem'] = $dados['imagem'];

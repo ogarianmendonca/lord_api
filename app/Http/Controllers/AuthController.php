@@ -84,8 +84,6 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:user',
-            'password' => 'required|confirmed',
-            'imagem' => 'required|string',
             'perfil_id' => 'required|integer',
         ]);
 
@@ -93,12 +91,12 @@ class AuthController extends Controller
             $usuario = new User;
             $usuario->name = $request->input('name');
             $usuario->email = $request->input('email');
-            $usuario->imagem = $request->input('imagem');
+            $usuario->imagem = $request->input('imagem') == null ? 'sem_imagem' : $request->input('imagem');
             $usuario->status = true;
-            $usuario->perfil_id = $request->input('perfil_id');
-            $plainPassword = $request->input('password');
+            $usuario->perfil_id = intval($request->input('perfil_id'));
+            $plainPassword = intval($request->input('password'));
             $usuario->password = app('hash')->make($plainPassword);
-            
+
             $usuario->save();
 
             return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);
