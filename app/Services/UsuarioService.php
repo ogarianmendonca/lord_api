@@ -37,7 +37,7 @@ class UsuarioService
      */
     public function buscarUsuarios()
     {
-        return $this->usuario->with('perfil')->get();
+        return $this->usuario->with('perfil')->orderBy('name')->get();
     }
 
     /**
