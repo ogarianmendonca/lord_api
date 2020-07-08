@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AutorizacaoService;
 use Exception;
-use App\Services\UsuarioService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Interfaces\UsuarioInterface;
+use App\Services\AutorizacaoService;
 
 /**
  * Class UsuarioController
@@ -15,26 +15,27 @@ use Illuminate\Http\Request;
 class UsuarioController extends Controller
 {
     /**
-     * @var UsuarioService
-     */
-    private $service;
-
-    /**
      * @var AutorizacaoService
      */
     private $autorizacaoService;
 
     /**
-     * UsuarioController constructor.
-     * @param UsuarioService $service
-     * @param AutorizacaoService $autorizacaoService
-     *
+     * @var UsuarioInterface
      */
-    public function __construct(UsuarioService $service, AutorizacaoService $autorizacaoService)
-    {
+    private $usuarioRepository;
+
+    /**
+     * UsuarioController constructor.
+     * @param AutorizacaoService $autorizacaoService
+     * @param UsuarioInterface $usuarioRepository
+     */
+    public function __construct(
+        AutorizacaoService $autorizacaoService,
+        UsuarioInterface $usuarioRepository
+    ) {
         $this->middleware('auth');
-        $this->service = $service;
         $this->autorizacaoService = $autorizacaoService;
+        $this->usuarioRepository = $usuarioRepository;
     }
 
     /**
@@ -45,7 +46,7 @@ class UsuarioController extends Controller
     public function buscarUsuarios()
     {
         try {
-            $usuarios = $this->service->buscarUsuarios();
+            $usuarios = $this->usuarioRepository->buscarUsuarios();
             return response()->json($usuarios);
         } catch (Exception $e) {
             return response()->json(['message' => 'Listagem não disponível!'], 409);
@@ -61,7 +62,7 @@ class UsuarioController extends Controller
     public function visualizarUsuario($id)
     {
         try {
-            $usuario = $this->service->buscarUsuarioSelecionado($id);
+            $usuario = $this->usuarioRepository->buscarUsuarioSelecionado($id);
             return response()->json(compact('usuario'));
         } catch (Exception $e) {
             return response()->json(['message' => 'Usuário não encontrado!'], 409);
@@ -80,7 +81,7 @@ class UsuarioController extends Controller
         $this->autorizacaoService->verificarAutorizacao($request, $id);
 
         try {
-            $retorno = $this->service->editarUsuario($id, $request->all());
+            $retorno = $this->usuarioRepository->editarUsuario($id, $request->all());
             return response()->json(['message' => 'Usuário editado!', 'usuario' => $retorno]);
         } catch (Exception $e) {
             return response()->json(['message' => 'Usuário não editado!'], 409);
@@ -98,7 +99,7 @@ class UsuarioController extends Controller
         $this->autorizacaoService->verificarAutorizacao($request, $id);
 
         try {
-            $retorno = $this->service->alterarStatusUsuario($id);
+            $retorno = $this->usuarioRepository->alterarStatusUsuario($id);
             return response()->json(['message' => 'Status alterado!', 'status' => $retorno]);
         } catch (Exception $e) {
             return response()->json(['message' => 'Status não alterado!'], 409);
@@ -111,7 +112,7 @@ class UsuarioController extends Controller
     public function upload(Request $request)
     {
         try {
-            $retorno = $this->service->upload($request);
+            $retorno = $this->usuarioRepository->upload($request);
             return response()->json(['message' => 'Imagem salva!', 'imagem' => $retorno]);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao salvar imagem!'], 409);

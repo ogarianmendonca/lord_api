@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Entities\Perfil;
-
 /**
  * Class PerfilService
  * @package App\Services
@@ -11,24 +9,9 @@ use App\Entities\Perfil;
 class PerfilService
 {
     /**
-     * @var Perfil
-     */
-    private $perfil;
-
-    /**
      * PerfilService constructor.
-     * @param Perfil $perfil
      */
-    public function __construct(Perfil $perfil)
+    public function __construct()
     {
-        $this->perfil = $perfil;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function buscarPerfis()
-    {
-        return $this->perfil->get();
     }
 }

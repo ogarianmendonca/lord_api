@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AutorizacaoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Entities\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\JWTAuth;
+use App\Services\AutorizacaoService;
+use App\Interfaces\UsuarioInterface;
 
 /**
  * Class AuthController
@@ -28,13 +28,22 @@ class AuthController extends Controller
     private $jwtAuth;
 
     /**
-     * AuthController constructor.
-     * @param AutorizacaoService $autorizacaoService
+     * @var UsuarioInterface
      */
-    public function __construct(AutorizacaoService $autorizacaoService, JWTAuth $jwtAuth)
+    private $usuarioRepository;
+
+    /**
+     * AuthController constructor.
+     */
+    public function __construct(
+        JWTAuth $jwtAuth,
+        AutorizacaoService $autorizacaoService, 
+        UsuarioInterface $usuarioRepository
+    )
     {
-        $this->autorizacaoService = $autorizacaoService;
         $this->jwtAuth = $jwtAuth;
+        $this->autorizacaoService = $autorizacaoService;
+        $this->usuarioRepository = $usuarioRepository;
     }
 
     /**
@@ -88,22 +97,12 @@ class AuthController extends Controller
         ]);
 
         try {
-            $usuario = new User;
-            $usuario->name = $request->input('name');
-            $usuario->email = $request->input('email');
-            $usuario->imagem = $request->input('imagem') == null ? 'sem_imagem' : $request->input('imagem');
-            $usuario->status = true;
-            $usuario->perfil_id = intval($request->input('perfil_id'));
-            $plainPassword = intval($request->input('password'));
-            $usuario->password = app('hash')->make($plainPassword);
-
-            $usuario->save();
+            $usuario = $this->usuarioRepository->criarUsuarioAplicacao($request);
 
             return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);
         } catch (Exception $e) {
             return response()->json(['message' => 'Cadastro não efetuado!'], 409);
         }
-
     }
 
     /**
@@ -132,5 +131,19 @@ class AuthController extends Controller
         $this->jwtAuth->invalidate($token);
 
         return response()->json(['logout']);
+    }
+
+    /**
+     * Cadastrar usuário do aplicativo mobile
+     */
+    public function criarUsuarioMobile(Request $request)
+    {
+        try {
+            $usuario = $this->usuarioRepository->criarUsuarioMobile($request);
+
+            return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Cadastro não efetuado!'], 409);
+        }
     }
 }

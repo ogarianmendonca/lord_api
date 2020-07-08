@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PerfilService;
 use Exception;
+use App\Interfaces\PerfilInterface;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -13,17 +13,17 @@ use Illuminate\Http\JsonResponse;
 class PerfilController extends Controller
 {
     /**
-     * @var PerfilService
+     * @var PerfilInterface
      */
-    private $service;
+    private $perfilRepository;
 
     /**
      * PerfilController constructor.
-     * @param PerfilService $service
+     * @param PerfilInterface $perfilRepository
      */
-    public function __construct(PerfilService $service)
+    public function __construct(PerfilInterface $perfilRepository)
     {
-        $this->service = $service;
+        $this->perfilRepository = $perfilRepository;
     }
 
     /**
@@ -34,7 +34,7 @@ class PerfilController extends Controller
     public function buscarPerfis()
     {
         try{
-            $perfis = $this->service->buscarPerfis();
+            $perfis = $this->perfilRepository->buscarPerfis();
             return response()->json($perfis);
         } catch (Exception $e){
             return response()->json(['message' => 'Listagem não disponível!'], 409);

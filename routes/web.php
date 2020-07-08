@@ -16,10 +16,13 @@ $router->get('/', function () use ($router) {
 
 // Grupo de rotas AUTH
 $router->group(['prefix' => 'auth'], function () use ($router) {
-    // Rota "/auth/login
+    // Rota "/auth/login"
     $router->post('login', 'AuthController@login');
 
-    // Rota "/auth/login
+    // Rota "/auth/criar-usuario-mobile"
+    $router->post('criar-usuario-mobile', 'AuthController@criarUsuarioMobile');
+
+    // Rota "/auth/login"
     $router->get('logout', 'AuthController@logout');
 });
 
@@ -27,10 +30,10 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
 $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use ($router) {
     // Grupo de rotas do USUARIO
     $router->group(['prefix' => 'usuario'], function() use ($router) {
-        // Rota "/api/usuario/cadastrar
+        // Rota "/api/usuario/cadastrar"
         $router->post('cadastrar', 'AuthController@cadastrar');
 
-        // Rota "/api/usuario/getUser
+        // Rota "/api/usuario/getUser"
         $router->get('getUser', 'AuthController@getUser');
 
         //Rota "/api/usuario/buscarUsuarios"
