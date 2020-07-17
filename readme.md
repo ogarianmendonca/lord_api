@@ -1,4 +1,4 @@
-# Lumen PHP Framework
+# Lumen PHP Framework | API
 
 ### Observações:
 1- executar composer install no back-end; \
