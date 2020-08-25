@@ -27,9 +27,9 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
 });
 
 // Grupo de rotas da API
-$router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use ($router) {
+$router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () use ($router) {
     // Grupo de rotas do USUARIO
-    $router->group(['prefix' => 'usuario'], function() use ($router) {
+    $router->group(['prefix' => 'usuario'], function () use ($router) {
         // Rota "/api/usuario/cadastrar"
         $router->post('cadastrar', 'AuthController@cadastrar');
 
@@ -53,7 +53,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function() use (
     });
 
     // Grupo de rotas do PEFIL
-    $router->group(['prefix' => 'perfil'], function() use ($router) {
+    $router->group(['prefix' => 'perfil'], function () use ($router) {
         //Rota "/api/perfil/buscarPerfis"
         $router->get('buscarPerfis', 'PerfilController@buscarPerfis');
     });

@@ -20,27 +20,29 @@ class AuthController extends Controller
     /**
      * @var AutorizacaoService
      */
-    private $autorizacaoService;
+    private AutorizacaoService $autorizacaoService;
 
     /**
      * @var JWTAuth
      */
-    private $jwtAuth;
+    private JWTAuth $jwtAuth;
 
     /**
      * @var UsuarioInterface
      */
-    private $usuarioRepository;
+    private UsuarioInterface $usuarioRepository;
 
     /**
      * AuthController constructor.
+     * @param JWTAuth $jwtAuth
+     * @param AutorizacaoService $autorizacaoService
+     * @param UsuarioInterface $usuarioRepository
      */
     public function __construct(
         JWTAuth $jwtAuth,
-        AutorizacaoService $autorizacaoService, 
+        AutorizacaoService $autorizacaoService,
         UsuarioInterface $usuarioRepository
-    )
-    {
+    ) {
         $this->jwtAuth = $jwtAuth;
         $this->autorizacaoService = $autorizacaoService;
         $this->usuarioRepository = $usuarioRepository;
@@ -53,7 +55,7 @@ class AuthController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         //valida solicitação recebida
         $this->validate($request, [
@@ -68,10 +70,10 @@ class AuthController extends Controller
 
         //verifica se o usuário está ativo
         $user = Auth::user();
-        if ($user['status'] === 0 || 
-            $user['status'] === '0' || 
-            $user['status'] === 'false' || 
-            $user['status'] === false){
+        if ($user['status'] === 0 ||
+            $user['status'] === '0' ||
+            $user['status'] === 'false' ||
+            $user['status'] === false) {
             return response()->json(['message' => 'Usuário inativo!'], 401);
         }
 
@@ -85,7 +87,7 @@ class AuthController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function cadastrar(Request $request)
+    public function cadastrar(Request $request): JsonResponse
     {
         $this->autorizacaoService->verificarAutorizacao($request);
 
@@ -101,7 +103,7 @@ class AuthController extends Controller
 
             return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Cadastro não efetuado!'], 409);
+            return response()->json(['message' => 'Cadastro não efetuado!'], $e->getCode());
         }
     }
 
@@ -110,7 +112,7 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function getUser()
+    public function getUser(): JsonResponse
     {
         try {
             $usuarioLogado = Auth::user();
@@ -118,14 +120,16 @@ class AuthController extends Controller
 
             return response()->json(['usuario' => $usuarioLogado], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Não foi possível retornar os dados!'], 409);
+            return response()->json(['message' => 'Não foi possível retornar os dados!'], $e->getCode());
         }
     }
 
     /**
-     *  Metodo de logout
+     * Metodo de logout
+     *
+     * @return JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         $token = $this->jwtAuth->getToken();
         $this->jwtAuth->invalidate($token);
@@ -135,15 +139,18 @@ class AuthController extends Controller
 
     /**
      * Cadastrar usuário do aplicativo mobile
+     *
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function criarUsuarioMobile(Request $request)
+    public function criarUsuarioMobile(Request $request): JsonResponse
     {
         try {
             $usuario = $this->usuarioRepository->criarUsuarioMobile($request);
 
             return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Cadastro não efetuado!'], 409);
+            return response()->json(['message' => 'Cadastro não efetuado!'], $e->getCode());
         }
     }
 }

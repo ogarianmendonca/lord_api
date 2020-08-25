@@ -17,12 +17,12 @@ class UsuarioController extends Controller
     /**
      * @var AutorizacaoService
      */
-    private $autorizacaoService;
+    private AutorizacaoService $autorizacaoService;
 
     /**
      * @var UsuarioInterface
      */
-    private $usuarioRepository;
+    private UsuarioInterface $usuarioRepository;
 
     /**
      * UsuarioController constructor.
@@ -43,7 +43,7 @@ class UsuarioController extends Controller
      *
      * @return JsonResponse
      */
-    public function buscarUsuarios()
+    public function buscarUsuarios(): JsonResponse
     {
         try {
             $usuarios = $this->usuarioRepository->buscarUsuarios();
@@ -59,7 +59,7 @@ class UsuarioController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function visualizarUsuario($id)
+    public function visualizarUsuario($id): JsonResponse
     {
         try {
             $usuario = $this->usuarioRepository->buscarUsuarioSelecionado($id);
@@ -76,7 +76,7 @@ class UsuarioController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function editar($id, Request $request)
+    public function editar($id, Request $request): JsonResponse
     {
         $this->autorizacaoService->verificarAutorizacao($request, $id);
 
@@ -94,7 +94,7 @@ class UsuarioController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function alterarStatus($id, Request $request)
+    public function alterarStatus($id, Request $request): JsonResponse
     {
         $this->autorizacaoService->verificarAutorizacao($request, $id);
 
@@ -109,7 +109,7 @@ class UsuarioController extends Controller
     /**
      * Upload de imagem do usuário
      */
-    public function upload(Request $request)
+    public function upload(Request $request): JsonResponse
     {
         try {
             $retorno = $this->usuarioRepository->upload($request);

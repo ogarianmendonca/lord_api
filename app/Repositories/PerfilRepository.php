@@ -4,13 +4,14 @@ namespace App\Repositories;
 
 use App\Entities\Perfil;
 use App\Interfaces\PerfilInterface;
+use Illuminate\Support\Collection;
 
 class PerfilRepository implements PerfilInterface
 {
-/**
+    /**
      * @var Perfil
      */
-    private $perfil;
+    private Perfil $perfil;
 
     /**
      * PerfilRepository constructor.
@@ -22,9 +23,9 @@ class PerfilRepository implements PerfilInterface
     }
 
     /**
-     * @return mixed
+     * @return Collection<Perfil>
      */
-    public function buscarPerfis()
+    public function buscarPerfis(): Collection
     {
         return $this->perfil->get();
     }

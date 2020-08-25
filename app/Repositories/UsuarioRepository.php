@@ -3,9 +3,7 @@
 namespace App\Repositories;
 
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Entities\User;
@@ -16,7 +14,7 @@ class UsuarioRepository implements UsuarioInterface
     /**
      * @var User
      */
-    private $usuario;
+    private User $usuario;
 
     /**
      * UsuarioRepository constructor.
@@ -25,14 +23,14 @@ class UsuarioRepository implements UsuarioInterface
     public function __construct(User $usuario)
     {
         $this->usuario = $usuario;
-    }   
+    }
 
     /**
      * Busca na base todos os usuários cadastrados
      *
-     * @return User[]|Builder[]|Collection
+     * @return Collection<User>
      */
-    public function buscarUsuarios()
+    public function buscarUsuarios(): Collection
     {
         return $this->usuario->with('perfil')->orderBy('name')->get();
     }
@@ -41,17 +39,20 @@ class UsuarioRepository implements UsuarioInterface
      * Busca na base o usuário por id
      *
      * @param $id
-     * @return User|User[]|Builder|Builder[]|Collection|Model
+     * @return User
      */
-    public function buscarUsuarioSelecionado($id)
+    public function buscarUsuarioSelecionado($id): User
     {
         return $this->usuario->with('perfil')->findOrFail($id);
     }
 
     /**
      * Cadastra usuários da aplicação web
+     *
+     * @param $params
+     * @return User
      */
-    public function criarUsuarioAplicacao($params) 
+    public function criarUsuarioAplicacao($params): User
     {
         $usuario = new User;
         $usuario->name = $params->input('name');
@@ -68,8 +69,11 @@ class UsuarioRepository implements UsuarioInterface
 
     /**
      * Cadastra usuários do aplicativo móvel
+     *
+     * @param $params
+     * @return User
      */
-    public function criarUsuarioMobile($params)
+    public function criarUsuarioMobile($params): User
     {
         $usuario = new User;
         $usuario->name = $params->input('name');
@@ -85,65 +89,62 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Edita usuário por id
+     * Edita usuário
      *
      * @param $id
      * @param $dados
-     * @return JsonResponse
+     * @return User
      * @throws Exception
      */
-    public function editarUsuario($id, $dados)
+    public function editarUsuario($id, $dados): User
     {
         $usuario = $this->usuario->findOrFail(intval($id));
 
         if ($usuario) {
-            DB::beginTransaction();
+            $usuario = User::find($id);
+            $usuario->name = $dados['name'];
+            $usuario->email = $dados['email'];
+            $usuario->perfil_id = intval($dados['perfil_id']);
 
-            $editaUsuario['name'] = $dados['name'];
-            $editaUsuario['email'] = $dados['email'];
-            $editaUsuario['perfil_id'] = intval($dados['perfil_id']);
-
-            if($dados['status'] === 'true' 
-                || $dados['status'] === '1' 
-                || $dados['status'] === true 
+            if ($dados['status'] === 'true'
+                || $dados['status'] === '1'
+                || $dados['status'] === true
                 || $dados['status'] === 1) {
-                $editaUsuario['status'] = true;
+                $usuario->status = true;
             } else {
-                $editaUsuario['status'] = false;
+                $usuario->status = false;
             }
 
             if (!empty($dados['imagem'])) {
-                $editaUsuario['imagem'] = $dados['imagem'];
+                $usuario->imagem = $dados['imagem'];
             }
 
             if (!empty($dados['password'])) {
-                $editaUsuario['password'] = app('hash')->make($dados['password']);
+                $usuario->password = app('hash')->make($dados['password']);
             } else {
-                unset($editaUsuario['password']);
+                unset($usuario->password);
             }
 
-            $this->usuario->find($id)->update($editaUsuario);
-
-            DB::commit();
-            return $editaUsuario;
+            $usuario->save();
+            return $usuario;
         } else {
             throw new Exception();
         }
     }
 
     /**
-     * Altera status de usuario selecionado
+     * Altera status de usuario
      *
      * @param $id
      * @return bool
      * @throws Exception
      */
-    public function alterarStatusUsuario($id)
+    public function alterarStatusUsuario($id): bool
     {
         $usuario = $this->usuario->with('perfil')->find($id);
 
         if ($usuario) {
-            DB::beginTransaction();
+            $dadosUsuario = User::find($id);
 
             if ($usuario['status']) {
                 $novoStatus = false;
@@ -151,11 +152,10 @@ class UsuarioRepository implements UsuarioInterface
                 $novoStatus = true;
             }
 
-            $alterarDado['status'] =  $novoStatus;
-            $this->usuario->find($id)->update($alterarDado);
+            $dadosUsuario->status =  $novoStatus;
+            $dadosUsuario->save();
 
-            DB::commit();
-            return $alterarDado['status'];
+            return $dadosUsuario->status;
         } else {
             throw new Exception();
         }
@@ -163,8 +163,12 @@ class UsuarioRepository implements UsuarioInterface
 
     /**
      * Upload da imagem do usuário
+     *
+     * @param $dadosArquivo
+     * @return string
+     * @throws Exception
      */
-    public function upload($dadosArquivo)
+    public function upload($dadosArquivo): string
     {
         // Salva a imagem dentro do diretorio do back-end
         // if($dadosArquivo->hasFile('imagem')) {
@@ -185,9 +189,7 @@ class UsuarioRepository implements UsuarioInterface
             $imagem = $dadosArquivo->file('imagem');
             $ext = $imagem->guessClientExtension();
             $data = file_get_contents($imagem);
-            $base64 = 'data:image/' . $ext . ';base64,' . base64_encode($data);
-
-            return $base64;
+            return 'data:image/' . $ext . ';base64,' . base64_encode($data);
         } else {
             throw new Exception();
         }

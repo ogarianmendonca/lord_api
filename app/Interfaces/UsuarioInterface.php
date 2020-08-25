@@ -2,19 +2,50 @@
 
 namespace App\Interfaces;
 
-interface UsuarioInterface 
+use App\Entities\User;
+use Illuminate\Support\Collection;
+
+interface UsuarioInterface
 {
-    public function buscarUsuarios();
+    /**
+     * @return Collection<User>
+     */
+    public function buscarUsuarios(): Collection;
 
-    public function buscarUsuarioSelecionado($id);
+    /**
+     * @param $id
+     * @return User
+     */
+    public function buscarUsuarioSelecionado($id): User;
 
-    public function criarUsuarioAplicacao($params);
+    /**
+     * @param $params
+     * @return User
+     */
+    public function criarUsuarioAplicacao($params): User;
 
-    public function criarUsuarioMobile($params);
+    /**
+     * @param $params
+     * @return User
+     */
+    public function criarUsuarioMobile($params): User;
 
-    public function editarUsuario($id, $dados);
+    /**
+     * @param $id
+     * @param $dados
+     * @return User
+     */
+    public function editarUsuario($id, $dados): User;
 
-    public function alterarStatusUsuario($id);
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function alterarStatusUsuario($id): bool;
 
-    public function upload($dadosArquivo);
+    /**
+     * @param $dadosArquivo
+     * @return string
+     */
+    public function upload($dadosArquivo): string;
 }

@@ -2,7 +2,13 @@
 
 namespace App\Interfaces;
 
-interface PerfilInterface 
+use App\Entities\Perfil;
+use Illuminate\Support\Collection;
+
+interface PerfilInterface
 {
-    public function buscarPerfis();
+    /**
+     * @return Collection<Perfil>
+     */
+    public function buscarPerfis(): Collection;
 }

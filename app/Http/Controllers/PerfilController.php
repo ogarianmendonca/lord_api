@@ -15,7 +15,7 @@ class PerfilController extends Controller
     /**
      * @var PerfilInterface
      */
-    private $perfilRepository;
+    private PerfilInterface $perfilRepository;
 
     /**
      * PerfilController constructor.
@@ -31,12 +31,12 @@ class PerfilController extends Controller
      *
      * @return JsonResponse
      */
-    public function buscarPerfis()
+    public function buscarPerfis(): JsonResponse
     {
-        try{
+        try {
             $perfis = $this->perfilRepository->buscarPerfis();
             return response()->json($perfis);
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json(['message' => 'Listagem não disponível!'], 409);
         }
     }

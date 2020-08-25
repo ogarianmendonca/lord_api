@@ -16,16 +16,15 @@ class Perfil extends Model
     /**
      * @var string
      */
-    protected $table = 'perfil';
+    protected string $table = 'perfil';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
+    protected array $fillable = [
         'descricao',
         'status'
     ];
-
 }
