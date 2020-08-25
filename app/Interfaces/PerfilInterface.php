@@ -10,5 +10,5 @@ interface PerfilInterface
     /**
      * @return Collection<Perfil>
      */
-    public function buscarPerfis(): Collection;
+    public function buscarPerfis();
 }

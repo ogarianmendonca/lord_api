@@ -17,12 +17,12 @@ class UsuarioController extends Controller
     /**
      * @var AutorizacaoService
      */
-    private AutorizacaoService $autorizacaoService;
+    private $autorizacaoService;
 
     /**
      * @var UsuarioInterface
      */
-    private UsuarioInterface $usuarioRepository;
+    private $usuarioRepository;
 
     /**
      * UsuarioController constructor.

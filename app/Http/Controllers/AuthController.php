@@ -20,17 +20,17 @@ class AuthController extends Controller
     /**
      * @var AutorizacaoService
      */
-    private AutorizacaoService $autorizacaoService;
+    private $autorizacaoService;
 
     /**
      * @var JWTAuth
      */
-    private JWTAuth $jwtAuth;
+    private $jwtAuth;
 
     /**
      * @var UsuarioInterface
      */
-    private UsuarioInterface $usuarioRepository;
+    private $usuarioRepository;
 
     /**
      * AuthController constructor.

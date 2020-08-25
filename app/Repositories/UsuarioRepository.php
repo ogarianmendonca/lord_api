@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Entities\User;
 use App\Interfaces\UsuarioInterface;
 
@@ -14,7 +13,7 @@ class UsuarioRepository implements UsuarioInterface
     /**
      * @var User
      */
-    private User $usuario;
+    private $usuario;
 
     /**
      * UsuarioRepository constructor.
@@ -28,9 +27,9 @@ class UsuarioRepository implements UsuarioInterface
     /**
      * Busca na base todos os usuários cadastrados
      *
-     * @return Collection<User>
+     * @return User[]|Builder[]|Collection|mixed
      */
-    public function buscarUsuarios(): Collection
+    public function buscarUsuarios()
     {
         return $this->usuario->with('perfil')->orderBy('name')->get();
     }

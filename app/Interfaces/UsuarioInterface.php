@@ -8,9 +8,9 @@ use Illuminate\Support\Collection;
 interface UsuarioInterface
 {
     /**
-     * @return Collection<User>
+     * @return Collection
      */
-    public function buscarUsuarios(): Collection;
+    public function buscarUsuarios();
 
     /**
      * @param $id

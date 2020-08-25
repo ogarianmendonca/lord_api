@@ -15,7 +15,7 @@ class PerfilController extends Controller
     /**
      * @var PerfilInterface
      */
-    private PerfilInterface $perfilRepository;
+    private $perfilRepository;
 
     /**
      * PerfilController constructor.

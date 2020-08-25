@@ -11,7 +11,7 @@ class PerfilRepository implements PerfilInterface
     /**
      * @var Perfil
      */
-    private Perfil $perfil;
+    private $perfil;
 
     /**
      * PerfilRepository constructor.
@@ -23,9 +23,9 @@ class PerfilRepository implements PerfilInterface
     }
 
     /**
-     * @return Collection<Perfil>
+     * @return Collection
      */
-    public function buscarPerfis(): Collection
+    public function buscarPerfis()
     {
         return $this->perfil->get();
     }
