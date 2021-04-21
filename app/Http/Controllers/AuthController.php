@@ -140,7 +140,7 @@ class AuthController extends Controller
 
             return response()->json(['usuario' => $usuario, 'message' => 'Usuário cadastrado!'], 201);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Cadastro não efetuado!'], $e->getCode());
+            return response()->json(['message' => 'Cadastro não efetuado!'], 400);
         }
     }
 }
