@@ -45,8 +45,8 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () use 
         //Rota "/api/usuario/editar/id"
         $router->put('editar/{id}', 'UsuarioController@editar');
 
-        //Rota "/api/usuario/alterar-tatus/id"
-        $router->put('alterar-tatus/{id}', 'UsuarioController@alterarStatus');
+        //Rota "/api/usuario/alterar-status/id"
+        $router->put('alterar-status/{id}', 'UsuarioController@alterarStatus');
 
         //Rota "/api/usuario/excluir-perfil/id"
         $router->delete('excluir-perfil/{id}', 'UsuarioController@excluirPerfil');
