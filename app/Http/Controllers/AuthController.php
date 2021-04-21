@@ -49,8 +49,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Obtém um JWT por meio de credenciais fornecidas.
-     *
      * @param Request $request
      * @return JsonResponse
      * @throws ValidationException
@@ -81,8 +79,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Cadastrar um novo usuário.
-     *
      * @param Request $request
      * @return JsonResponse
      * @throws ValidationException
@@ -108,8 +104,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Obtém o usuário autenticado.
-     *
      * @return JsonResponse
      */
     public function getUser(): JsonResponse
@@ -125,8 +119,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Metodo de logout
-     *
      * @return JsonResponse
      */
     public function logout(): JsonResponse
@@ -138,8 +130,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Cadastrar usuário do aplicativo mobile
-     *
      * @param Request $request
      * @return JsonResponse
      */

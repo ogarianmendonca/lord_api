@@ -25,9 +25,7 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Busca na base todos os usuários cadastrados
-     *
-     * @return User[]|Builder[]|Collection|mixed
+     * @return User[]|Builder[]|Collection|\Illuminate\Support\Collection
      */
     public function buscarUsuarios()
     {
@@ -35,8 +33,6 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Busca na base o usuário por id
-     *
      * @param $id
      * @return User
      */
@@ -46,8 +42,6 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Cadastra usuários da aplicação web
-     *
      * @param $params
      * @return User
      */
@@ -67,8 +61,6 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Cadastra usuários do aplicativo móvel
-     *
      * @param $params
      * @return User
      */
@@ -88,8 +80,6 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Edita usuário
-     *
      * @param $id
      * @param $dados
      * @return User
@@ -132,8 +122,6 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Altera status de usuario
-     *
      * @param $id
      * @return bool
      * @throws Exception
@@ -161,29 +149,24 @@ class UsuarioRepository implements UsuarioInterface
     }
 
     /**
-     * Upload da imagem do usuário
-     *
+     * @param $id
+     */
+    public function excluirPerfil($id): void
+    {
+        $usuario = $this->usuario->findOrFail(intval($id));
+
+        if ($usuario) {
+            $usuario->delete();
+        }
+    }
+
+    /**
      * @param $dadosArquivo
      * @return string
      * @throws Exception
      */
     public function upload($dadosArquivo): string
     {
-        // Salva a imagem dentro do diretorio do back-end
-        // if($dadosArquivo->hasFile('imagem')) {
-        //     $imagem = $dadosArquivo->file('imagem');
-
-        //     $ext = $imagem->guessClientExtension();
-        //     $diretorio = "img/uploads/perfil/";
-        //     $nomeImg = $diretorio . 'imagem_perfil_' . rand(11111,99999) . '.' . $ext;
-        //     $imagem->move($diretorio, $nomeImg);
-
-        //     return $nomeImg;
-        // } else {
-        //     throw new Exception();
-        // }
-
-        // Salva a imagem no banco de dados no formato base64
         if ($dadosArquivo->hasFile('imagem')) {
             $imagem = $dadosArquivo->file('imagem');
             $ext = $imagem->guessClientExtension();

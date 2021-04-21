@@ -39,8 +39,6 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Lista todos os usuários cadastrados
-     *
      * @return JsonResponse
      */
     public function buscarUsuarios(): JsonResponse
@@ -54,8 +52,6 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Busca usuário selecionado
-     *
      * @param $id
      * @return JsonResponse
      */
@@ -70,8 +66,6 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Edita usuário selecionado
-     *
      * @param $id
      * @param Request $request
      * @return JsonResponse
@@ -89,9 +83,8 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Alterar status de usuário selecionado
-     *
      * @param $id
+     * @param Request $request
      * @return JsonResponse
      */
     public function alterarStatus($id, Request $request): JsonResponse
@@ -107,7 +100,25 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Upload de imagem do usuário
+     * @param $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function excluirPerfil($id, Request $request): JsonResponse
+    {
+        $this->autorizacaoService->verificarAutorizacao($request, $id);
+
+        try {
+            $this->usuarioRepository->excluirPerfil($id);
+            return response()->json(['message' => 'Perfil excluído com sucesso!']);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Erro ao excluir perfil!'], 409);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
      */
     public function upload(Request $request): JsonResponse
     {

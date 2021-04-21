@@ -44,6 +44,12 @@ interface UsuarioInterface
     public function alterarStatusUsuario($id): bool;
 
     /**
+     * @param $id
+     * @return bool
+     */
+    public function excluirPerfil($id): void;
+
+    /**
      * @param $dadosArquivo
      * @return string
      */

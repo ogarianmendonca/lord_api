@@ -27,8 +27,6 @@ class PerfilController extends Controller
     }
 
     /**
-     * Busca todos os perfis cadastrados
-     *
      * @return JsonResponse
      */
     public function buscarPerfis(): JsonResponse

@@ -34,7 +34,6 @@ class AutorizacaoService
      *
      * @param $request
      * @param null $id
-     * @return void
      */
     public function verificarAutorizacao($request, $id = null)
     {
@@ -54,6 +53,12 @@ class AutorizacaoService
                     ->json(['Usuário não tem permissão para esta ação!'], 403)
                     ->throwResponse();
             }
+        }
+
+        if ($request->method() === "DELETE" && intval($id) !== $this->usuarioLogado()->id) {
+            return response()
+                ->json(['Usuário não tem permissão para esta ação!'], 403)
+                ->throwResponse();
         }
     }
 }

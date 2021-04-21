@@ -33,20 +33,23 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () use 
         // Rota "/api/usuario/cadastrar"
         $router->post('cadastrar', 'AuthController@cadastrar');
 
-        // Rota "/api/usuario/getUser"
-        $router->get('getUser', 'AuthController@getUser');
+        // Rota "/api/usuario/get-user"
+        $router->get('get-user', 'AuthController@getUser');
 
-        //Rota "/api/usuario/buscarUsuarios"
-        $router->get('buscarUsuarios', 'UsuarioController@buscarUsuarios');
+        //Rota "/api/usuario/buscar-usuarios"
+        $router->get('buscar-usuarios', 'UsuarioController@buscarUsuarios');
 
-        //Rota "/api/usuario/visualizarUsuario/id
-        $router->get('visualizarUsuario/{id}', 'UsuarioController@visualizarUsuario');
+        //Rota "/api/usuario/visualizar-usuario/id
+        $router->get('visualizar-usuario/{id}', 'UsuarioController@visualizarUsuario');
 
         //Rota "/api/usuario/editar/id"
         $router->put('editar/{id}', 'UsuarioController@editar');
 
-        //Rota "/api/usuario/alterarStatus/id"
-        $router->put('alterarStatus/{id}', 'UsuarioController@alterarStatus');
+        //Rota "/api/usuario/alterar-tatus/id"
+        $router->put('alterar-tatus/{id}', 'UsuarioController@alterarStatus');
+
+        //Rota "/api/usuario/excluir-perfil/id"
+        $router->delete('excluir-perfil/{id}', 'UsuarioController@excluirPerfil');
 
         //Rota "/api/usuario/upload"
         $router->post('upload', 'UsuarioController@upload');
@@ -54,7 +57,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () use 
 
     // Grupo de rotas do PEFIL
     $router->group(['prefix' => 'perfil'], function () use ($router) {
-        //Rota "/api/perfil/buscarPerfis"
-        $router->get('buscarPerfis', 'PerfilController@buscarPerfis');
+        //Rota "/api/perfil/buscar-perfis"
+        $router->get('buscar-perfis', 'PerfilController@buscarPerfis');
     });
 });
