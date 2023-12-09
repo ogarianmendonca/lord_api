@@ -1,5 +1,4 @@
 /vendor
 Homestead.json
 Homestead.yaml
-.env
 database/database.sqlite

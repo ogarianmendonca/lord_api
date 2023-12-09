@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  lumen:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    command: php -S 0.0.0.0:8080 public/index.php
